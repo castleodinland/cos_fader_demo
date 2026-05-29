@@ -1,0 +1,19 @@
+# IDE & tools
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.o
+*.obj
+*.elf
+*.bin
+*.hex
+build/
