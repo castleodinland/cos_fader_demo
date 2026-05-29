@@ -10,11 +10,11 @@ Smooth volume transitions that eliminate the click/pop artifacts — from pure m
 
 Cutting a waveform to zero in a single sample creates a wideband impulse — your ear hears a "pop."
 
-![Continuous vs discontinuous signal](figures/fig_01_sine_discontinuity.png)
+![Continuous vs discontinuous signal](docs/figures/fig_01_sine_discontinuity.png)
 
 A linear fade fixes the amplitude jump, but the **slope still jumps** at the boundaries, producing a quieter click.
 
-![Three fade curve comparison](figures/fig_03_fade_compare.png)
+![Three fade curve comparison](docs/figures/fig_03_fade_compare.png)
 
 The **raised-cosine window** goes further: both value **and** slope are continuous at both endpoints.
 
@@ -24,7 +24,7 @@ The **raised-cosine window** goes further: both value **and** slope are continuo
 | Linear | Yes | No | Subtle click |
 | **Raised cosine** | **Yes** | **Yes** | **Silent** |
 
-![Cⁿ continuity ladder](figures/fig_12_cn_continuity.png)
+![Cⁿ continuity ladder](docs/figures/fig_12_cn_continuity.png)
 
 ---
 
@@ -42,7 +42,7 @@ f'(t) = ∓(π / 2T) · sin(π · t / T)
 f'(0) = 0,    f'(T) = 0      ✓ proof
 ```
 
-![Raised cosine detail](figures/fig_04_raised_cosine_detail.png)
+![Raised cosine detail](docs/figures/fig_04_raised_cosine_detail.png)
 
 ---
 
@@ -50,13 +50,13 @@ f'(0) = 0,    f'(T) = 0      ✓ proof
 
 Multiplying a signal by an envelope is **amplitude modulation (AM)**.
 
-![AM modulation](figures/fig_06_am_modulation.png)
+![AM modulation](docs/figures/fig_06_am_modulation.png)
 
 In the frequency domain, multiplication = **convolution** of spectra: each frequency component gets "smeared" by the envelope's spectrum.
 
-![Window frequency response](figures/fig_07_window_freq_response.png)
+![Window frequency response](docs/figures/fig_07_window_freq_response.png)
 
-![Convolution visualization](figures/fig_17_convolution_visual.png)
+![Convolution visualization](docs/figures/fig_17_convolution_visual.png)
 
 | Window | Peak sidelobe | Decay |
 |--------|:---:|:---:|
@@ -66,7 +66,7 @@ In the frequency domain, multiplication = **convolution** of spectra: each frequ
 
 Lower sidelobes = less spectral leakage = cleaner audio.
 
-![Raised cosine spectrum](figures/fig_11_raised_cosine_spectrum.png)
+![Raised cosine spectrum](docs/figures/fig_11_raised_cosine_spectrum.png)
 
 ---
 
@@ -74,7 +74,7 @@ Lower sidelobes = less spectral leakage = cleaner audio.
 
 Embedded DSP chips have no FPU. We use fixed-point math:
 
-![Q15 number line](figures/fig_08_q15_number_line.png)
+![Q15 number line](docs/figures/fig_08_q15_number_line.png)
 
 | Format | Integer range | Real value = int / |
 |--------|:---:|:---:|
@@ -97,7 +97,7 @@ buf[si] = __nds32__kwmmul(buf[si], fade_q31);
 
 A 257-entry cosine table with linear interpolation replaces `cos()` — no floating point needed.
 
-![Lookup table](figures/fig_09_lookup_table.png)
+![Lookup table](docs/figures/fig_09_lookup_table.png)
 
 ```c
 // Only integer shifts and multiplies — max error < 0.0001
@@ -125,7 +125,7 @@ angle_next:  x_q15  += delta_base
 
 **Zero LSB error** — exhaustively verified against the division formula for all N = 1..65536. Saves ~20–35 clock cycles per sample, freeing **~1.7 MIPS** at 48 kHz.
 
-![Algorithm flow](figures/fig_15_algorithm_flow.png)
+![Algorithm flow](docs/figures/fig_15_algorithm_flow.png)
 
 ---
 
@@ -218,8 +218,7 @@ cos_fade_in(pcm_buffer, 1, 32, 22050);
 ```
 ├── src/               Core C library (5 implementations)
 ├── scripts/           Python verification + MATLAB simulation
-├── docs/              Tutorial (in Chinese) + DSP library manual
-├── figures/           All diagrams and test outputs
+├── docs/              Tutorial + figures + DSP library manual
 └── README.md
 ```
 
